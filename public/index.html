@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMON_DEV Deployment App</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="blue.css">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8">DEMON_DEV Deployment App</h1>
+        <div id="auth-section" class="mb-8 hidden">
+            <input type="text" id="username-input" placeholder="Enter username" class="w-full p-2 mb-4 bg-gray-800 border border-gray-700 rounded">
+            <input type="password" id="password-input" placeholder="Enter password" class="w-full p-2 mb-4 bg-gray-800 border border-gray-700 rounded">
+            <button id="register-btn" class="w-full p-2 mb-2 bg-blue-600 hover:bg-blue-700 rounded">Register🐥</button>
+            <button id="login-btn" class="w-full p-2 bg-green-600 hover:bg-green-700 rounded">Login🐐</button>
+            <div id="login-interface" class="mt-4 p-4 bg-gray-800 border border-gray-700 rounded hidden"></div>
+        </div>
+        <div id="app-section" class="hidden">
+            <div id="log-display" class="bg-gray-800 border border-gray-700 rounded p-4 h-96 overflow-y-auto mb-4"></div>
+            <div id="command-section" class="flex space-x-2">
+                <input type="text" id="command-input" placeholder="Enter command" class="flex-grow p-2 bg-gray-800 border border-gray-700 rounded">
+                <button id="send-command" class="p-2 bg-purple-600 hover:bg-purple-700 rounded">Send</button>
+            </div>
+            <button id="logout-btn" class="mt-4 p-2 bg-red-600 hover:bg-red-700 rounded">Logout</button>
+        </div>
+        <div id="admin-section" class="hidden mt-8 overflow-y-auto" style="max-height: 400px;">
+            <h2 class="text-2xl font-bold mb-4">Masters Panel</h2>
+            <button id="get-users-btn" class="w-full p-2 mb-2 bg-yellow-600 hover:bg-yellow-700 rounded">Get All Users</button>
+            <div id="user-list" class="bg-gray-800 border border-gray-700 rounded p-4 h-48 overflow-y-auto mb-4"></div>
+            <div class="flex space-x-2">
+                <input type="text" id="user-id-input" placeholder="Enter User ID" class="flex-grow p-2 bg-gray-800 border border-gray-700 rounded">
+                <button id="ban-user-btn" class="p-2 bg-red-600 hover:bg-red-700 rounded">Ban User</button>
+                <button id="unban-user-btn" class="p-2 bg-green-600 hover:bg-green-700 rounded">Unban User</button>
+                <button id="delete-user-btn" class="p-2 bg-red-800 hover:bg-red-900 rounded">Delete User</button>
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="blue.js"></script>
+</body>
+</html>
 
