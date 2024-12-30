@@ -1,8 +1,4 @@
-const socket = io({
-    query: {
-        userId: localStorage.getItem('currentUserId')
-    }
-});
+const socket = io();
 
 const authSection = document.getElementById('auth-section');
 const appSection = document.getElementById('app-section');
@@ -24,11 +20,7 @@ const loginInterface = document.getElementById('login-interface');
 const listBtn = document.getElementById('list-btn');
 const clearBtn = document.getElementById('clear-btn');
 const restartBtn = document.getElementById('restart-btn');
-const adminShellBtn = document.getElementById('admin-shell-btn');
-const adminShellSection = document.getElementById('admin-shell-section');
-const adminShellOutput = document.getElementById('admin-shell-output');
-const adminShellInput = document.getElementById('admin-shell-input');
-const adminShellSend = document.getElementById('admin-shell-send');
+const serverRuntime = document.getElementById('server-runtime'); // Added serverRuntime element
 
 let currentUserId = null;
 let isAdmin = false;
@@ -48,32 +40,23 @@ function showAppSection() {
     authSection.classList.add('hidden');
     loginInterface.classList.add('hidden');
     appSection.classList.remove('hidden');
-    
-    // Remove existing username display if it exists
-    const existingUsernameDisplay = document.querySelector('.username-display');
-    if (existingUsernameDisplay) {
-        existingUsernameDisplay.remove();
+    if (isAdmin) {
+        adminSection.classList.remove('hidden');
     }
     
     // Add username display above terminal
     const usernameDisplay = document.createElement('div');
     usernameDisplay.textContent = `Terminal - ${username}`;
-    usernameDisplay.classList.add('text-lg', 'font-bold', 'mb-2', 'text-green-500', 'username-display');
+    usernameDisplay.classList.add('text-lg', 'font-bold', 'mb-2', 'text-green-500');
     logDisplay.parentNode.insertBefore(usernameDisplay, logDisplay);
-    
-    if (isAdmin) {
-        adminSection.classList.remove('hidden');
-        adminShellBtn.classList.remove('hidden');
-    }
     
     // Display BLUE ID message and user's UID
     appendLog("This is your BLUE ID");
     appendLog(`Your UID: ${currentUserId}`);
     
-    // Add a 0.5-second delay before starting the terminal
     setTimeout(() => {
-        // Automatically start the terminal
         socket.emit('start', currentUserId);
+        socket.emit('getServerRuntime'); // Added getServerRuntime emit
     }, 500);
 }
 
@@ -82,7 +65,7 @@ function logout() {
     isAdmin = false;
     localStorage.removeItem('currentUserId');
     localStorage.removeItem('isAdmin');
-    localStorage.removeItem('users');
+    localStorage.removeItem('users'); //remove users from local storage on logout
     authSection.classList.remove('hidden');
     loginInterface.classList.add('hidden');
     appSection.classList.add('hidden');
@@ -220,29 +203,6 @@ deleteUserBtn.addEventListener('click', () => {
     }
 });
 
-adminShellBtn.addEventListener('click', () => {
-    if (isAdmin) {
-        adminShellSection.classList.toggle('hidden');
-        if (!adminShellSection.classList.contains('hidden')) {
-            adminShellOutput.innerHTML = 'Admin shell ready. Type your commands below.\n';
-        }
-    }
-});
-
-adminShellSend.addEventListener('click', () => {
-    const command = adminShellInput.value;
-    if (command) {
-        socket.emit('adminShellCommand', command);
-        adminShellInput.value = '';
-    }
-});
-
-adminShellInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        adminShellSend.click();
-    }
-});
-
 socket.on('registerResponse', (response) => {
     if (response.success) {
         currentUserId = response.userId;
@@ -308,13 +268,10 @@ socket.on('adminDeleteUserResponse', (response) => {
     }
 });
 
-socket.on('adminShellResponse', (response) => {
-    adminShellOutput.innerHTML += response + '\n';
-    adminShellOutput.scrollTop = adminShellOutput.scrollHeight;
+socket.on('serverRuntime', (runtime) => { // Added serverRuntime listener
+    serverRuntime.textContent = `Server Runtime: ${runtime}`;
 });
 
 document.getElementById('logout-btn').addEventListener('click', logout);
 
 checkExistingSession();
-
-        

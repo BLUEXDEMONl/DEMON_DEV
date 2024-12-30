@@ -93,14 +93,3 @@ button:hover {
     background-color: #718096;
     border-radius: 4px;
 }
-
-#admin-shell-output {
-    font-family: 'Courier New', monospace;
-    white-space: pre-wrap;
-    word-break: break-word;
-}
-
-#admin-shell-input {
-    font-family: 'Courier New', monospace;
-}
-
