@@ -1,7 +1,7 @@
 body {
     font-family: 'Courier New', monospace;
-    background-color: #1a202c;
-    color: #e2e8f0;
+    background-color: #0a192f; /* Dark navy blue */
+    color: #ccd6f6; /* Soft light blue */
 }
 
 .container {
@@ -10,13 +10,13 @@ body {
 
 #log-display {
     font-family: 'Courier New', monospace;
-    background-color: #2d3748;
-    border-color: #4a5568;
+    background-color: #112240; /* Deep navy blue */
+    border-color: #233554; /* Muted blue-gray */
     transition: all 0.3s ease;
 }
 
 #log-display:hover {
-    box-shadow: 0 0 15px rgba(66, 153, 225, 0.5);
+    box-shadow: 0 0 15px rgba(100, 149, 237, 0.5); /* Cornflower blue glow */
 }
 
 #log-display::-webkit-scrollbar {
@@ -24,11 +24,11 @@ body {
 }
 
 #log-display::-webkit-scrollbar-track {
-    background: #4a5568;
+    background: #233554; /* Muted blue-gray */
 }
 
 #log-display::-webkit-scrollbar-thumb {
-    background-color: #718096;
+    background-color: #3a506b; /* Steel blue */
     border-radius: 4px;
 }
 
@@ -38,23 +38,28 @@ input[type="text"], button {
 
 input[type="text"]:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+    box-shadow: 0 0 0 2px rgba(100, 149, 237, 0.5); /* Cornflower blue */
 }
 
 button {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    background-color: #2563eb; /* Vibrant blue */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
 }
 
 button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 6px rgba(100, 149, 237, 0.5), 0 1px 3px rgba(0, 0, 0, 0.1); /* Soft blue glow */
 }
 
 .log-entry {
     padding: 4px 0;
-    border-bottom: 1px solid #4a5568;
+    border-bottom: 1px solid #233554; /* Muted blue-gray */
 }
 
 .log-entry:last-child {
@@ -78,7 +83,7 @@ button:hover {
 
 #admin-section {
     scrollbar-width: thin;
-    scrollbar-color: #718096 #2d3748;
+    scrollbar-color: #3a506b #112240; /* Steel blue on deep navy blue */
 }
 
 #admin-section::-webkit-scrollbar {
@@ -86,10 +91,10 @@ button:hover {
 }
 
 #admin-section::-webkit-scrollbar-track {
-    background: #2d3748;
+    background: #112240; /* Deep navy blue */
 }
 
 #admin-section::-webkit-scrollbar-thumb {
-    background-color: #718096;
+    background-color: #3a506b; /* Steel blue */
     border-radius: 4px;
 }
