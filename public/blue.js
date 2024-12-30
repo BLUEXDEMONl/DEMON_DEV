@@ -20,6 +20,7 @@ const loginInterface = document.getElementById('login-interface');
 const listBtn = document.getElementById('list-btn');
 const clearBtn = document.getElementById('clear-btn');
 const restartBtn = document.getElementById('restart-btn');
+const serverRuntime = document.getElementById('server-runtime'); // Added serverRuntime element
 
 let currentUserId = null;
 let isAdmin = false;
@@ -55,6 +56,7 @@ function showAppSection() {
     
     setTimeout(() => {
         socket.emit('start', currentUserId);
+        socket.emit('getServerRuntime'); // Added getServerRuntime emit
     }, 500);
 }
 
@@ -266,8 +268,11 @@ socket.on('adminDeleteUserResponse', (response) => {
     }
 });
 
+socket.on('serverRuntime', (runtime) => { // Added serverRuntime listener
+    serverRuntime.textContent = `Server Runtime: ${runtime}`;
+});
+
 document.getElementById('logout-btn').addEventListener('click', logout);
 
 checkExistingSession();
 
-            
