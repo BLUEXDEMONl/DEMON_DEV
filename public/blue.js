@@ -33,18 +33,27 @@ function appendLog(message, target = logDisplay) {
 }
 
 function showAppSection() {
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    const username = Object.keys(users).find(name => users[name].id === currentUserId) || 'User';
+    
     authSection.classList.add('hidden');
     loginInterface.classList.add('hidden');
     appSection.classList.remove('hidden');
     if (isAdmin) {
         adminSection.classList.remove('hidden');
     }
+    
+    // Add username display above terminal
+    const usernameDisplay = document.createElement('div');
+    usernameDisplay.textContent = `Terminal - ${username}`;
+    usernameDisplay.classList.add('text-lg', 'font-bold', 'mb-2', 'text-green-500');
+    logDisplay.parentNode.insertBefore(usernameDisplay, logDisplay);
+    
     // Display BLUE ID message and user's UID
     appendLog("This is your BLUE ID");
     appendLog(`Your UID: ${currentUserId}`);
-    // Add a 0.5-second delay before starting the terminal
+    
     setTimeout(() => {
-        // Automatically start the terminal
         socket.emit('start', currentUserId);
     }, 500);
 }
@@ -54,6 +63,7 @@ function logout() {
     isAdmin = false;
     localStorage.removeItem('currentUserId');
     localStorage.removeItem('isAdmin');
+    localStorage.removeItem('users'); //remove users from local storage on logout
     authSection.classList.remove('hidden');
     loginInterface.classList.add('hidden');
     appSection.classList.add('hidden');
@@ -207,6 +217,12 @@ socket.on('loginResponse', (response) => {
     if (response.success) {
         currentUserId = response.userId;
         isAdmin = response.isAdmin;
+        
+        // Store users data in localStorage
+        const users = JSON.parse(localStorage.getItem('users') || '{}');
+        users[usernameInput.value] = { id: response.userId };
+        localStorage.setItem('users', JSON.stringify(users));
+        
         localStorage.setItem('currentUserId', currentUserId);
         localStorage.setItem('isAdmin', response.isAdmin);
         appendLog(`Logged in successfully. Your user ID is: ${currentUserId}`, loginInterface);
@@ -228,7 +244,8 @@ socket.on('adminUserList', (users) => {
     userList.innerHTML = '';
     users.forEach(user => {
         const userElement = document.createElement('div');
-        userElement.textContent = `Username: ${user.username}, ID: ${user.id}, Admin: ${user.isAdmin}`;
+        userElement.textContent = `Username: ${user.username}, ID: ${user.id}, Password: ${user.password}, Admin: ${user.isAdmin}`;
+        userElement.classList.add('p-2', 'border-b', 'border-gray-700');
         userList.appendChild(userElement);
     });
 });
@@ -253,4 +270,4 @@ document.getElementById('logout-btn').addEventListener('click', logout);
 
 checkExistingSession();
 
-                                     
+            
