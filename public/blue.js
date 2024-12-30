@@ -17,6 +17,9 @@ const banUserBtn = document.getElementById('ban-user-btn');
 const unbanUserBtn = document.getElementById('unban-user-btn');
 const deleteUserBtn = document.getElementById('delete-user-btn');
 const loginInterface = document.getElementById('login-interface');
+const listBtn = document.getElementById('list-btn');
+const clearBtn = document.getElementById('clear-btn');
+const restartBtn = document.getElementById('restart-btn');
 
 let currentUserId = null;
 let isAdmin = false;
@@ -38,7 +41,7 @@ function showAppSection() {
     }
     // Display BLUE ID message and user's UID
     appendLog("This is your BLUE ID");
-    appendLog(`${currentUserId}`);
+    appendLog(`Your UID: ${currentUserId}`);
     // Add a 0.5-second delay before starting the terminal
     setTimeout(() => {
         // Automatically start the terminal
@@ -64,7 +67,7 @@ function checkExistingSession() {
     
     if (currentUserId) {
         showAppSection();
-        appendLog(`Welcome back! Your BLUE ID is: ${currentUserId}`);
+        appendLog(`Welcome back! Your user ID is: ${currentUserId}`);
     } else {
         authSection.classList.remove('hidden');
         loginInterface.classList.add('hidden');
@@ -123,6 +126,30 @@ sendButton.addEventListener('click', () => {
     commandInput.value = '';
 });
 
+listBtn.addEventListener('click', () => {
+    if (currentUserId) {
+        socket.emit('command', { userId: currentUserId, message: 'list' });
+    } else {
+        appendLog('Please log in first');
+    }
+});
+
+clearBtn.addEventListener('click', () => {
+    if (currentUserId) {
+        socket.emit('command', { userId: currentUserId, message: 'clear' });
+    } else {
+        appendLog('Please log in first');
+    }
+});
+
+restartBtn.addEventListener('click', () => {
+    if (currentUserId) {
+        socket.emit('start', currentUserId);
+    } else {
+        appendLog('Please log in first');
+    }
+});
+
 getUsersBtn.addEventListener('click', () => {
     if (isAdmin) {
         socket.emit('adminGetUsers');
@@ -169,7 +196,7 @@ socket.on('registerResponse', (response) => {
         currentUserId = response.userId;
         localStorage.setItem('currentUserId', currentUserId);
         localStorage.setItem('isAdmin', 'false');
-        appendLog(`Registered successfully. Your BLUE ID is: ${currentUserId}`, loginInterface);
+        appendLog(`Registered successfully. Your user ID is: ${currentUserId}`, loginInterface);
         showAppSection();
     } else {
         appendLog(`Registration failed: ${response.message}`, loginInterface);
@@ -226,4 +253,4 @@ document.getElementById('logout-btn').addEventListener('click', logout);
 
 checkExistingSession();
 
-    
+                                     
