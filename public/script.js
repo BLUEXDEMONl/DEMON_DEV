@@ -51,8 +51,8 @@ function showAppSection() {
     logDisplay.parentNode.insertBefore(usernameDisplay, logDisplay);
     
     // Display BLUE ID message and user's UID
-    appendLog("This is your BLUE ID");
-    appendLog(`Your UID: ${currentUserId}`);
+    appendLog("This is your BLUE ID👇");
+    appendLog(`${currentUserId}`);
     
     setTimeout(() => {
         socket.emit('start', currentUserId);
@@ -79,7 +79,7 @@ function checkExistingSession() {
     
     if (currentUserId) {
         showAppSection();
-        appendLog(`Welcome back! Your user ID is: ${currentUserId}`);
+        appendLog(`Welcome back!😊😊`);
     } else {
         authSection.classList.remove('hidden');
         loginInterface.classList.add('hidden');
@@ -208,7 +208,7 @@ socket.on('registerResponse', (response) => {
         currentUserId = response.userId;
         localStorage.setItem('currentUserId', currentUserId);
         localStorage.setItem('isAdmin', 'false');
-        appendLog(`Registered successfully. Your user ID is: ${currentUserId}`, loginInterface);
+        appendLog(`Registered successfully. Your user BLUE ID is: ${currentUserId}`, loginInterface);
         showAppSection();
     } else {
         appendLog(`Registration failed: ${response.message}`, loginInterface);
