@@ -20,7 +20,7 @@ const loginInterface = document.getElementById('login-interface');
 const listBtn = document.getElementById('list-btn');
 const clearBtn = document.getElementById('clear-btn');
 const restartBtn = document.getElementById('restart-btn');
-const serverRuntime = document.getElementById('server-runtime'); // Added serverRuntime element
+const serverRuntime = document.getElementById('server-runtime');
 
 let currentUserId = null;
 let isAdmin = false;
@@ -56,7 +56,7 @@ function showAppSection() {
     
     setTimeout(() => {
         socket.emit('start', currentUserId);
-        socket.emit('getServerRuntime'); // Added getServerRuntime emit
+        socket.emit('getServerRuntime');
     }, 500);
 }
 
@@ -65,7 +65,8 @@ function logout() {
     isAdmin = false;
     localStorage.removeItem('currentUserId');
     localStorage.removeItem('isAdmin');
-    localStorage.removeItem('users'); //remove users from local storage on logout
+    localStorage.removeItem('uniqueId');
+    localStorage.removeItem('users');
     authSection.classList.remove('hidden');
     loginInterface.classList.add('hidden');
     appSection.classList.add('hidden');
@@ -76,8 +77,9 @@ function logout() {
 function checkExistingSession() {
     currentUserId = localStorage.getItem('currentUserId');
     isAdmin = localStorage.getItem('isAdmin') === 'true';
+    const uniqueId = localStorage.getItem('uniqueId');
     
-    if (currentUserId) {
+    if (currentUserId && uniqueId) {
         showAppSection();
         appendLog(`Welcome back!😊😊`);
     } else {
@@ -222,11 +224,12 @@ socket.on('loginResponse', (response) => {
         
         // Store users data in localStorage
         const users = JSON.parse(localStorage.getItem('users') || '{}');
-        users[usernameInput.value] = { id: response.userId };
+        users[usernameInput.value] = { id: response.userId, uniqueId: response.uniqueId };
         localStorage.setItem('users', JSON.stringify(users));
         
         localStorage.setItem('currentUserId', currentUserId);
         localStorage.setItem('isAdmin', response.isAdmin);
+        localStorage.setItem('uniqueId', response.uniqueId);
         appendLog(`Logged in successfully. Your user ID is: ${currentUserId}`, loginInterface);
         showAppSection();
     } else {
@@ -268,10 +271,12 @@ socket.on('adminDeleteUserResponse', (response) => {
     }
 });
 
-socket.on('serverRuntime', (runtime) => { // Added serverRuntime listener
+socket.on('serverRuntime', (runtime) => {
     serverRuntime.textContent = `Server Runtime: ${runtime}`;
 });
 
 document.getElementById('logout-btn').addEventListener('click', logout);
 
 checkExistingSession();
+
+                    
