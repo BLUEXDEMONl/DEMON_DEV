@@ -65,7 +65,6 @@ function logout() {
     isAdmin = false;
     localStorage.removeItem('currentUserId');
     localStorage.removeItem('isAdmin');
-    localStorage.removeItem('uniqueId');
     localStorage.removeItem('users');
     authSection.classList.remove('hidden');
     loginInterface.classList.add('hidden');
@@ -77,15 +76,23 @@ function logout() {
 function checkExistingSession() {
     currentUserId = localStorage.getItem('currentUserId');
     isAdmin = localStorage.getItem('isAdmin') === 'true';
-    const uniqueId = localStorage.getItem('uniqueId');
     
-    if (currentUserId && uniqueId) {
+    if (currentUserId) {
         showAppSection();
         appendLog(`Welcome back!😊😊`);
     } else {
         authSection.classList.remove('hidden');
         loginInterface.classList.add('hidden');
     }
+}
+
+function getClientId() {
+  let clientId = localStorage.getItem('clientId');
+  if (!clientId) {
+    clientId = 'client_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('clientId', clientId);
+  }
+  return clientId;
 }
 
 registerBtn.addEventListener('click', () => {
@@ -98,7 +105,7 @@ registerBtn.addEventListener('click', () => {
             loginInterface.classList.remove('hidden');
             loginInterface.innerHTML = '';
             appendLog('Registering...', loginInterface);
-            socket.emit('register', { username, password });
+            socket.emit('register', { username, password, clientId: getClientId() });
         }
     } else {
         loginInterface.classList.remove('hidden');
@@ -114,7 +121,7 @@ loginBtn.addEventListener('click', () => {
         loginInterface.classList.remove('hidden');
         loginInterface.innerHTML = '';
         appendLog('Logging in...', loginInterface);
-        socket.emit('login', { username, password });
+        socket.emit('login', { username, password, clientId: getClientId() });
     } else {
         loginInterface.classList.remove('hidden');
         loginInterface.innerHTML = '';
@@ -224,12 +231,11 @@ socket.on('loginResponse', (response) => {
         
         // Store users data in localStorage
         const users = JSON.parse(localStorage.getItem('users') || '{}');
-        users[usernameInput.value] = { id: response.userId, uniqueId: response.uniqueId };
+        users[usernameInput.value] = { id: response.userId };
         localStorage.setItem('users', JSON.stringify(users));
         
         localStorage.setItem('currentUserId', currentUserId);
         localStorage.setItem('isAdmin', response.isAdmin);
-        localStorage.setItem('uniqueId', response.uniqueId);
         appendLog(`Logged in successfully. Your user ID is: ${currentUserId}`, loginInterface);
         showAppSection();
     } else {
@@ -279,4 +285,4 @@ document.getElementById('logout-btn').addEventListener('click', logout);
 
 checkExistingSession();
 
-                    
+    
