@@ -1,100 +1,171 @@
 body {
-    font-family: 'Courier New', monospace;
-    background-color: #0a192f; /* Dark navy blue */
-    color: #ccd6f6; /* Soft light blue */
+  font-family: 'Inter', sans-serif;
+  background-color: #111827;
+  color: #e2e8f0;
 }
 
 .container {
-    max-width: 800px;
+  max-width: 1000px;
 }
 
 #log-display {
-    font-family: 'Courier New', monospace;
-    background-color: #112240; /* Deep navy blue */
-    border-color: #233554; /* Muted blue-gray */
-    transition: all 0.3s ease;
+  font-family: 'Fira Code', monospace;
+  background-color: #1f2937;
+  border-color: #374151;
+  transition: all 0.3s ease;
 }
 
 #log-display:hover {
-    box-shadow: 0 0 15px rgba(100, 149, 237, 0.5); /* Cornflower blue glow */
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
 }
 
 #log-display::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 #log-display::-webkit-scrollbar-track {
-    background: #233554; /* Muted blue-gray */
+  background: #374151;
 }
 
 #log-display::-webkit-scrollbar-thumb {
-    background-color: #3a506b; /* Steel blue */
-    border-radius: 4px;
+  background-color: #4b5563;
+  border-radius: 4px;
 }
 
-input[type="text"], button {
-    transition: all 0.3s ease;
+input[type="text"], input[type="password"], button {
+  transition: all 0.3s ease;
 }
 
-input[type="text"]:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(100, 149, 237, 0.5); /* Cornflower blue */
+input[type="text"]:focus, input[type="password"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
 }
 
 button {
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    background-color: #2563eb; /* Vibrant blue */
-    color: #ffffff; /* White text */
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(100, 149, 237, 0.5), 0 1px 3px rgba(0, 0, 0, 0.1); /* Soft blue glow */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .log-entry {
-    padding: 4px 0;
-    border-bottom: 1px solid #233554; /* Muted blue-gray */
+  padding: 4px 0;
+  border-bottom: 1px solid #4b5563;
 }
 
 .log-entry:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .fade-in {
-    animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 #login-interface {
-    font-family: 'Courier New', monospace;
-    white-space: pre-wrap;
-    word-break: break-word;
+  font-family: 'Fira Code', monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 #admin-section {
-    scrollbar-width: thin;
-    scrollbar-color: #3a506b #112240; /* Steel blue on deep navy blue */
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 #1f2937;
 }
 
 #admin-section::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 #admin-section::-webkit-scrollbar-track {
-    background: #112240; /* Deep navy blue */
+  background: #1f2937;
 }
 
 #admin-section::-webkit-scrollbar-thumb {
-    background-color: #3a506b; /* Steel blue */
-    border-radius: 4px;
+  background-color: #4b5563;
+  border-radius: 4px;
 }
+
+.bg-gray-800 {
+  background-color: #1f2937;
+}
+
+.bg-gray-700 {
+  background-color: #374151;
+}
+
+.border-gray-600 {
+  border-color: #4b5563;
+}
+
+.text-blue-500 {
+  color: #3b82f6;
+}
+
+.text-green-500 {
+  color: #10b981;
+}
+
+.bg-blue-600 {
+  background-color: #2563eb;
+}
+
+.bg-green-600 {
+  background-color: #059669;
+}
+
+.bg-red-600 {
+  background-color: #dc2626;
+}
+
+.bg-purple-600 {
+  background-color: #7c3aed;
+}
+
+.bg-yellow-600 {
+  background-color: #d97706;
+}
+
+.hover\:bg-blue-700:hover {
+  background-color: #1d4ed8;
+}
+
+.hover\:bg-green-700:hover {
+  background-color: #047857;
+}
+
+.hover\:bg-red-700:hover {
+  background-color: #b91c1c;
+}
+
+.hover\:bg-purple-700:hover {
+  background-color: #6d28d9;
+}
+
+.hover\:bg-yellow-700:hover {
+  background-color: #b45309;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  #action-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
