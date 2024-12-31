@@ -41,8 +41,17 @@
                 <button id="unban-user-btn" class="p-2 bg-green-600 hover:bg-green-700 rounded">Unban User🥸</button>
                 <button id="delete-user-btn" class="p-2 bg-red-800 hover:bg-red-900 rounded">Delete User💔</button>
             </div>
+        <div id="admin-terminal-section" class="hidden mt-8">
+          <h2 class="text-2xl font-bold mb-4">Admin Terminal</h2>
+          <div id="current-path" class="text-green-500 mb-2"></div>
+          <div id="admin-terminal" class="bg-black text-green-500 p-4 h-64 overflow-y-auto mb-4 font-mono"></div>
+          <div class="flex space-x-2">
+            <input type="text" id="admin-input" placeholder="Enter command" class="flex-grow p-2 bg-gray-800 border border-gray-700 rounded text-white">
+            <button id="admin-send-btn" class="p-2 bg-blue-600 hover:bg-blue-700 rounded">Send</button>
+          </div>
         </div>
-          <div class="mt-8 text-center">
+        </div>
+        <div class="mt-8 text-center">
             <p class="text-gray-400">Contact DEV:</p>
             <a href="https://wa.me/2347041039367" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-green-500 hover:text-green-400 transition-colors">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -50,12 +59,13 @@
               </svg>
               wa.me/2347041039367
             </a>
-          </div>
-          <div class="mt-4 text-center text-gray-500">
+        </div>
+        <div class="mt-4 text-center text-gray-500">
             <p>&copy; 2025 DEMON TECH. All rights reserved⁹⁹⁹.</p>
-          </div>
+        </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
+
