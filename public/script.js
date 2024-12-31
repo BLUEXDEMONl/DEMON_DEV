@@ -21,8 +21,6 @@ const listBtn = document.getElementById('list-btn');
 const clearBtn = document.getElementById('clear-btn');
 const restartBtn = document.getElementById('restart-btn');
 const serverRuntime = document.getElementById('server-runtime');
-const togglePasswordBtn = document.getElementById('toggle-password');
-const runFileBtn = document.getElementById('run-file-btn');
 
 let currentUserId = null;
 let isAdmin = false;
@@ -101,10 +99,6 @@ registerBtn.addEventListener('click', () => {
     const username = usernameInput.value;
     const password = passwordInput.value;
     if (username && password) {
-        if (password.length < 7) {
-            appendLog('Password must be at least 7 characters long 🔒', loginInterface);
-            return;
-        }
         if (currentUserId) {
             appendLog('You are already logged in. Please log out to create a new account.', loginInterface);
         } else {
@@ -290,22 +284,4 @@ socket.on('serverRuntime', (runtime) => {
 document.getElementById('logout-btn').addEventListener('click', logout);
 
 checkExistingSession();
-
-togglePasswordBtn.addEventListener('click', () => {
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        togglePasswordBtn.textContent = 'Hide';
-    } else {
-        passwordInput.type = 'password';
-        togglePasswordBtn.textContent = 'Show';
-    }
-});
-
-runFileBtn.addEventListener('click', () => {
-    if (currentUserId) {
-        socket.emit('command', { userId: currentUserId, message: 'run npm start' });
-    } else {
-        appendLog('Please log in first');
-    }
-});
 

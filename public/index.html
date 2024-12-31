@@ -12,10 +12,7 @@
         <h1 class="text-4xl font-bold text-center mb-8">DEMON_DEV Deployment App</h1>
         <div id="auth-section" class="mb-8 hidden">
             <input type="text" id="username-input" placeholder="Enter username" class="w-full p-2 mb-4 bg-gray-800 border border-gray-700 rounded">
-            <div class="relative">
-                <input type="password" id="password-input" placeholder="Enter password" class="w-full p-2 mb-4 bg-gray-800 border border-gray-700 rounded">
-                <button id="toggle-password" type="button" class="absolute right-2 top-2 text-gray-400 hover:text-white">Show</button>
-            </div>
+            <input type="password" id="password-input" placeholder="Enter password" class="w-full p-2 mb-4 bg-gray-800 border border-gray-700 rounded">
             <button id="register-btn" class="w-full p-2 mb-2 bg-blue-600 hover:bg-blue-700 rounded">Register🐥</button>
             <button id="login-btn" class="w-full p-2 bg-green-600 hover:bg-green-700 rounded">Login🐐</button>
             <div id="login-interface" class="mt-4 p-4 bg-gray-800 border border-gray-700 rounded hidden"></div>
@@ -31,7 +28,6 @@
                 <button id="list-btn" class="flex-1 p-2 bg-blue-600 hover:bg-blue-700 rounded">LIST💦</button>
                 <button id="clear-btn" class="flex-1 p-2 bg-red-600 hover:bg-red-700 rounded">CLEAR👺</button>
                 <button id="restart-btn" class="flex-1 p-2 bg-green-600 hover:bg-green-700 rounded">RESTART♻️</button>
-                <button id="run-file-btn" class="flex-1 p-2 bg-yellow-600 hover:bg-yellow-700 rounded">RUN FILE🚀</button>
             </div>
             <button id="logout-btn" class="w-full p-2 bg-red-600 hover:bg-red-700 rounded">Logout🤡</button>
         </div>
@@ -46,7 +42,7 @@
                 <button id="delete-user-btn" class="p-2 bg-red-800 hover:bg-red-900 rounded">Delete User💔</button>
             </div>
         </div>
-        <div class="mt-8 text-center">
+          <div class="mt-8 text-center">
             <p class="text-gray-400">Contact DEV:</p>
             <a href="https://wa.me/2347041039367" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-green-500 hover:text-green-400 transition-colors">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -54,13 +50,12 @@
               </svg>
               wa.me/2347041039367
             </a>
-        </div>
-        <div class="mt-4 text-center text-gray-500">
+          </div>
+          <div class="mt-4 text-center text-gray-500">
             <p>&copy; 2025 DEMON TECH. All rights reserved⁹⁹⁹.</p>
-        </div>
+          </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
-

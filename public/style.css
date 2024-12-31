@@ -93,21 +93,3 @@ button:hover {
     background-color: #718096;
     border-radius: 4px;
 }
-
-#toggle-password {
-    transition: all 0.3s ease;
-}
-
-#toggle-password:hover {
-    transform: translateY(-1px);
-}
-
-#run-file-btn {
-    transition: all 0.3s ease;
-}
-
-#run-file-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
