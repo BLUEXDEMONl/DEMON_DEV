@@ -93,19 +93,3 @@ button:hover {
     background-color: #718096;
     border-radius: 4px;
 }
-
-#admin-terminal {
-  font-family: 'Courier New', monospace;
-  background-color: #000;
-  color: #00ff00;
-  border: 1px solid #333;
-}
-
-#admin-terminal .terminal-entry {
-  padding: 2px 0;
-}
-
-#current-path {
-  font-weight: bold;
-}
-

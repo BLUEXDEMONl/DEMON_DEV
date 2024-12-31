@@ -20,14 +20,10 @@ const loginInterface = document.getElementById('login-interface');
 const listBtn = document.getElementById('list-btn');
 const clearBtn = document.getElementById('clear-btn');
 const restartBtn = document.getElementById('restart-btn');
-const serverRuntime = document.getElementById('server-runtime');
-const adminTerminal = document.getElementById('admin-terminal');
-const adminInput = document.getElementById('admin-input');
-const adminSendBtn = document.getElementById('admin-send-btn');
+const serverRuntime = document.getElementById('server-runtime'); // Added serverRuntime element
 
 let currentUserId = null;
 let isAdmin = false;
-let currentPath = '';
 
 function appendLog(message, target = logDisplay) {
     const logEntry = document.createElement('div');
@@ -46,8 +42,6 @@ function showAppSection() {
     appSection.classList.remove('hidden');
     if (isAdmin) {
         adminSection.classList.remove('hidden');
-        document.getElementById('admin-terminal-section').classList.remove('hidden');
-        socket.emit('command', { userId: currentUserId, message: 'pwd' });
     }
     
     // Add username display above terminal
@@ -62,7 +56,7 @@ function showAppSection() {
     
     setTimeout(() => {
         socket.emit('start', currentUserId);
-        socket.emit('getServerRuntime');
+        socket.emit('getServerRuntime'); // Added getServerRuntime emit
     }, 500);
 }
 
@@ -71,7 +65,7 @@ function logout() {
     isAdmin = false;
     localStorage.removeItem('currentUserId');
     localStorage.removeItem('isAdmin');
-    localStorage.removeItem('users');
+    localStorage.removeItem('users'); //remove users from local storage on logout
     authSection.classList.remove('hidden');
     loginInterface.classList.add('hidden');
     appSection.classList.add('hidden');
@@ -274,33 +268,10 @@ socket.on('adminDeleteUserResponse', (response) => {
     }
 });
 
-socket.on('serverRuntime', (runtime) => {
+socket.on('serverRuntime', (runtime) => { // Added serverRuntime listener
     serverRuntime.textContent = `Server Runtime: ${runtime}`;
-});
-
-socket.on('updatePath', (newPath) => {
-  currentPath = newPath;
-  document.getElementById('current-path').textContent = `Current Path: ${newPath}`;
-});
-
-function updateAdminTerminal(message) {
-  const terminalEntry = document.createElement('div');
-  terminalEntry.textContent = message;
-  terminalEntry.classList.add('terminal-entry');
-  adminTerminal.appendChild(terminalEntry);
-  adminTerminal.scrollTop = adminTerminal.scrollHeight;
-}
-
-adminSendBtn.addEventListener('click', () => {
-  const command = adminInput.value;
-  if (command) {
-    socket.emit('command', { userId: currentUserId, message: command });
-    updateAdminTerminal(`$ ${command}`);
-    adminInput.value = '';
-  }
 });
 
 document.getElementById('logout-btn').addEventListener('click', logout);
 
 checkExistingSession();
-
