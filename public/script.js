@@ -251,8 +251,8 @@ socket.on('message', (message) => {
     logDisplay.scrollTop = logDisplay.scrollHeight;
 });
 
-socket.on('adminUserList', (users) => {
-    userList.innerHTML = '';
+socket.on('adminUserList', ({ users, totalUserCount }) => {
+    userList.innerHTML = `<div class="p-2 border-b border-gray-700 font-bold">Total Users: ${totalUserCount} / 25</div>`;
     users.forEach(user => {
         const userElement = document.createElement('div');
         userElement.textContent = `Username: ${user.username}, ID: ${user.id}, Password: ${user.password}, Admin: ${user.isAdmin}`;
@@ -285,3 +285,4 @@ document.getElementById('logout-btn').addEventListener('click', logout);
 
 checkExistingSession();
 
+    
