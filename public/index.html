@@ -7,42 +7,54 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-900 text-white">
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-center mb-8">DEMON_DEV Deployment App</h1>
+<body class="bg-gradient-to-br from-purple-900 to-indigo-800 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 class="text-4xl font-bold text-center mb-8 text-yellow-300 animate-pulse">DEMON_DEV Deployment App</h1>
         <div id="auth-section" class="mb-8 hidden">
-            <input type="text" id="username-input" placeholder="Enter username" class="w-full p-2 mb-4 bg-gray-800 border border-gray-700 rounded">
-            <input type="password" id="password-input" placeholder="Enter password" class="w-full p-2 mb-4 bg-gray-800 border border-gray-700 rounded">
-            <button id="register-btn" class="w-full p-2 mb-2 bg-blue-600 hover:bg-blue-700 rounded">Register🐥</button>
-            <button id="login-btn" class="w-full p-2 bg-green-600 hover:bg-green-700 rounded">Login🐐</button>
+            <input type="text" id="username-input" placeholder="Enter username" class="w-full p-2 mb-4 bg-purple-700 border border-purple-500 rounded text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <div class="relative">
+                <input type="password" id="password-input" placeholder="Enter password" class="w-full p-2 mb-2 bg-purple-700 border border-purple-500 rounded text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-400 hover:text-white transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+            <div id="password-strength" class="mb-2 text-sm"></div>
+            <button id="register-btn" class="w-full p-2 mb-2 bg-blue-600 hover:bg-blue-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">Register🐥</button>
+            <button id="login-btn" class="w-full p-2 bg-green-600 hover:bg-green-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">Login🐐</button>
             <div id="login-interface" class="mt-4 p-4 bg-gray-800 border border-gray-700 rounded hidden"></div>
+            <div id="password-requirements" class="mt-2 text-sm text-gray-400 hidden">
+                Password must be at least 7 characters long.
+            </div>
         </div>
         <div id="app-section" class="hidden">
             <div id="server-runtime" class="text-lg font-bold mb-2 text-blue-500"></div>
-            <div id="log-display" class="bg-gray-800 border border-gray-700 rounded p-4 h-96 overflow-y-auto mb-4"></div>
+            <div id="log-display" class="bg-purple-800 border border-purple-600 rounded p-4 h-96 overflow-y-auto mb-4 text-purple-100"></div>
             <div id="command-section" class="flex space-x-2 mb-4">
-                <input type="text" id="command-input" placeholder="Enter command" class="flex-grow p-2 bg-gray-800 border border-gray-700 rounded">
-                <button id="send-command" class="p-2 bg-purple-600 hover:bg-purple-700 rounded">Send😈</button>
+                <input type="text" id="command-input" placeholder="Enter command" class="flex-grow p-2 bg-purple-700 border border-purple-500 rounded text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <button id="send-command" class="p-2 bg-purple-600 hover:bg-purple-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">Send😈</button>
             </div>
             <div id="action-buttons" class="flex space-x-2 mb-4">
-                <button id="list-btn" class="flex-1 p-2 bg-blue-600 hover:bg-blue-700 rounded">LIST💦</button>
-                <button id="clear-btn" class="flex-1 p-2 bg-red-600 hover:bg-red-700 rounded">CLEAR👺</button>
-                <button id="restart-btn" class="flex-1 p-2 bg-green-600 hover:bg-green-700 rounded">RESTART♻️</button>
+                <button id="list-btn" class="flex-1 p-2 bg-blue-600 hover:bg-blue-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">LIST💦</button>
+                <button id="clear-btn" class="flex-1 p-2 bg-red-600 hover:bg-red-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">CLEAR👺</button>
+                <button id="restart-btn" class="flex-1 p-2 bg-green-600 hover:bg-green-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">RESTART♻️</button>
             </div>
-            <button id="logout-btn" class="w-full p-2 bg-red-600 hover:bg-red-700 rounded">Logout🤡</button>
+            <button id="logout-btn" class="w-full p-2 bg-red-600 hover:bg-red-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">Logout🤡</button>
         </div>
-        <div id="admin-section" class="hidden mt-8 overflow-y-auto" style="max-height: 400px;">
+        <div id="admin-section" class="hidden mt-8 overflow-y-auto bg-purple-800 border border-purple-600 rounded p-4" style="max-height: 400px;">
             <h2 class="text-2xl font-bold mb-4">MASTERS SPACE</h2>
-            <button id="get-users-btn" class="w-full p-2 mb-2 bg-yellow-600 hover:bg-yellow-700 rounded">Get All Users🐥</button>
-            <div id="user-list" class="bg-gray-800 border border-gray-700 rounded p-4 h-48 overflow-y-auto mb-4"></div>
+            <button id="get-users-btn" class="w-full p-2 mb-2 bg-yellow-600 hover:bg-yellow-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">Get All Users🐥</button>
+            <div id="user-list" class="bg-purple-700 border border-purple-500 rounded p-4 h-48 overflow-y-auto mb-4 text-purple-100"></div>
             <div class="flex space-x-2">
-                <input type="text" id="user-id-input" placeholder="Enter User ID" class="flex-grow p-2 bg-gray-800 border border-gray-700 rounded">
-                <button id="ban-user-btn" class="p-2 bg-red-600 hover:bg-red-700 rounded">Ban User🤡</button>
-                <button id="unban-user-btn" class="p-2 bg-green-600 hover:bg-green-700 rounded">Unban User🥸</button>
-                <button id="delete-user-btn" class="p-2 bg-red-800 hover:bg-red-900 rounded">Delete User💔</button>
+                <input type="text" id="user-id-input" placeholder="Enter User ID" class="flex-grow p-2 bg-purple-700 border border-purple-500 rounded text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                <button id="ban-user-btn" class="p-2 bg-red-600 hover:bg-red-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">Ban User🤡</button>
+                <button id="unban-user-btn" class="p-2 bg-green-600 hover:bg-green-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">Unban User🥸</button>
+                <button id="delete-user-btn" class="p-2 bg-red-800 hover:bg-red-900 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400">Delete User💔</button>
             </div>
         </div>
-          <div class="mt-8 text-center">
+        <div class="mt-8 text-center">
             <p class="text-gray-400">Contact DEV:</p>
             <a href="https://wa.me/2347041039367" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-green-500 hover:text-green-400 transition-colors">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -50,12 +62,13 @@
               </svg>
               wa.me/2347041039367
             </a>
-          </div>
-          <div class="mt-4 text-center text-gray-500">
+        </div>
+        <div class="mt-4 text-center text-gray-500">
             <p>&copy; 2025 DEMON TECH. All rights reserved⁹⁹⁹.</p>
-          </div>
+        </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
+
