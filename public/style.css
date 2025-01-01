@@ -1,95 +1,98 @@
 body {
-    font-family: 'Courier New', monospace;
-    background-color: #1a202c;
-    color: #e2e8f0;
-}
-
-.container {
-    max-width: 800px;
+  font-family: 'Courier New', monospace;
 }
 
 #log-display {
-    font-family: 'Courier New', monospace;
-    background-color: #2d3748;
-    border-color: #4a5568;
-    transition: all 0.3s ease;
+  font-family: 'Courier New', monospace;
+  transition: all 0.3s ease;
 }
 
 #log-display:hover {
-    box-shadow: 0 0 15px rgba(66, 153, 225, 0.5);
+  box-shadow: 0 0 15px rgba(236, 201, 75, 0.5);
 }
 
 #log-display::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 #log-display::-webkit-scrollbar-track {
-    background: #4a5568;
+  background: #4c1d95;
 }
 
 #log-display::-webkit-scrollbar-thumb {
-    background-color: #718096;
-    border-radius: 4px;
+  background-color: #7c3aed;
+  border-radius: 4px;
 }
 
-input[type="text"], button {
-    transition: all 0.3s ease;
+input[type="text"], input[type="password"], button {
+  transition: all 0.3s ease;
 }
 
-input[type="text"]:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+input[type="text"]:focus, input[type="password"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(236, 201, 75, 0.5);
 }
 
 button {
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .log-entry {
-    padding: 4px 0;
-    border-bottom: 1px solid #4a5568;
+  padding: 4px 0;
+  border-bottom: 1px solid #6d28d9;
 }
 
 .log-entry:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .fade-in {
-    animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 #login-interface {
-    font-family: 'Courier New', monospace;
-    white-space: pre-wrap;
-    word-break: break-word;
+  font-family: 'Courier New', monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 #admin-section {
-    scrollbar-width: thin;
-    scrollbar-color: #718096 #2d3748;
+  scrollbar-width: thin;
+  scrollbar-color: #7c3aed #4c1d95;
 }
 
 #admin-section::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 #admin-section::-webkit-scrollbar-track {
-    background: #2d3748;
+  background: #4c1d95;
 }
 
 #admin-section::-webkit-scrollbar-thumb {
-    background-color: #718096;
-    border-radius: 4px;
+  background-color: #7c3aed;
+  border-radius: 4px;
 }
+
+@keyframes glowing {
+  0% { box-shadow: 0 0 5px #ffd700; }
+  50% { box-shadow: 0 0 20px #ffd700; }
+  100% { box-shadow: 0 0 5px #ffd700; }
+}
+
+.glow-effect {
+  animation: glowing 1.5s infinite;
+}
+
