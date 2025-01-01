@@ -13,9 +13,6 @@ const sendButton = document.getElementById('send-command');
 const getUsersBtn = document.getElementById('get-users-btn');
 const userList = document.getElementById('user-list');
 const userIdInput = document.getElementById('user-id-input');
-const banUserBtn = document.getElementById('ban-user-btn');
-const unbanUserBtn = document.getElementById('unban-user-btn');
-const deleteUserBtn = document.getElementById('delete-user-btn');
 const loginInterface = document.getElementById('login-interface');
 const listBtn = document.getElementById('list-btn');
 const clearBtn = document.getElementById('clear-btn');
@@ -24,9 +21,16 @@ const serverRuntime = document.getElementById('server-runtime');
 const togglePasswordBtn = document.getElementById('toggle-password');
 const passwordStrength = document.getElementById('password-strength');
 const passwordRequirements = document.getElementById('password-requirements');
+const searchUsersInput = document.getElementById('search-users');
+const paginationContainer = document.getElementById('pagination');
+const actionSelect = document.getElementById('action-select');
+const executeActionBtn = document.getElementById('execute-action-btn');
 
 let currentUserId = null;
 let isAdmin = false;
+let allUsers = [];
+let currentPage = 1;
+const usersPerPage = 10;
 
 function appendLog(message, target = logDisplay) {
     const logEntry = document.createElement('div');
@@ -121,6 +125,42 @@ function checkPasswordStrength() {
     }
 }
 
+function displayUsers(users) {
+    userList.innerHTML = `<div class="p-2 border-b border-gray-600 font-bold">Total Users: ${users.length} / 25</div>`;
+    users.forEach(user => {
+        const userElement = document.createElement('div');
+        userElement.textContent = `Username: ${user.username}, ID: ${user.id}, Admin: ${user.isAdmin}`;
+        userElement.classList.add('p-2', 'border-b', 'border-gray-600');
+        userList.appendChild(userElement);
+    });
+}
+
+function filterUsers() {
+    const searchTerm = searchUsersInput.value.toLowerCase();
+    const filteredUsers = allUsers.filter(user => 
+        user.username.toLowerCase().includes(searchTerm) || 
+        user.id.toLowerCase().includes(searchTerm)
+    );
+    displayUsers(filteredUsers);
+    setupPagination(filteredUsers);
+}
+
+function setupPagination(users) {
+    const pageCount = Math.ceil(users.length / usersPerPage);
+    paginationContainer.innerHTML = '';
+    
+    for (let i = 1; i <= pageCount; i++) {
+        const button = document.createElement('button');
+        button.innerText = i;
+        button.classList.add('px-3', 'py-1', 'bg-gray-700', 'hover:bg-gray-600', 'rounded');
+        button.addEventListener('click', () => {
+            currentPage = i;
+            displayUsers(users.slice((i - 1) * usersPerPage, i * usersPerPage));
+        });
+        paginationContainer.appendChild(button);
+    }
+}
+
 registerBtn.addEventListener('click', () => {
     const username = usernameInput.value;
     const password = passwordInput.value;
@@ -205,37 +245,28 @@ getUsersBtn.addEventListener('click', () => {
     }
 });
 
-banUserBtn.addEventListener('click', () => {
+executeActionBtn.addEventListener('click', () => {
     if (isAdmin) {
         const userId = userIdInput.value;
-        if (userId) {
-            socket.emit('adminBanUser', userId);
-        } else {
-            appendLog('Please enter a User ID to ban');
-        }
-    }
-});
-
-unbanUserBtn.addEventListener('click', () => {
-    if (isAdmin) {
-        const userId = userIdInput.value;
-        if (userId) {
-            socket.emit('adminUnbanUser', userId);
-        } else {
-            appendLog('Please enter a User ID to unban');
-        }
-    }
-});
-
-deleteUserBtn.addEventListener('click', () => {
-    if (isAdmin) {
-        const userId = userIdInput.value;
-        if (userId) {
-            if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
-                socket.emit('adminDeleteUser', userId);
+        const action = actionSelect.value;
+        if (userId && action) {
+            switch (action) {
+                case 'ban':
+                    socket.emit('adminBanUser', userId);
+                    break;
+                case 'unban':
+                    socket.emit('adminUnbanUser', userId);
+                    break;
+                case 'delete':
+                    if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                        socket.emit('adminDeleteUser', userId);
+                    }
+                    break;
+                default:
+                    appendLog('Invalid action selected');
             }
         } else {
-            appendLog('Please enter a User ID to delete');
+            appendLog('Please enter a User ID and select an action');
         }
     }
 });
@@ -280,13 +311,9 @@ socket.on('message', (message) => {
 });
 
 socket.on('adminUserList', ({ users, totalUserCount }) => {
-    userList.innerHTML = `<div class="p-2 border-b border-gray-700 font-bold">Total Users: ${totalUserCount} / 25</div>`;
-    users.forEach(user => {
-        const userElement = document.createElement('div');
-        userElement.textContent = `Username: ${user.username}, ID: ${user.id}, Password: ${user.password}, Admin: ${user.isAdmin}`;
-        userElement.classList.add('p-2', 'border-b', 'border-gray-700');
-        userList.appendChild(userElement);
-    });
+    allUsers = users;
+    displayUsers(users.slice(0, usersPerPage));
+    setupPagination(users);
 });
 
 socket.on('adminBanResponse', (response) => {
@@ -310,9 +337,9 @@ socket.on('serverRuntime', (runtime) => {
 });
 
 document.getElementById('logout-btn').addEventListener('click', logout);
-
-checkExistingSession();
-
 togglePasswordBtn.addEventListener('click', togglePasswordVisibility);
 passwordInput.addEventListener('input', checkPasswordStrength);
+searchUsersInput.addEventListener('input', filterUsers);
+
+checkExistingSession();
 
