@@ -1,10 +1,3 @@
-function addGlowEffect(button) {
-  button.classList.add('glow-effect');
-  setTimeout(() => {
-    button.classList.remove('glow-effect');
-  }, 1000);
-}
-
 const socket = io();
 
 const authSection = document.getElementById('auth-section');
@@ -129,7 +122,6 @@ function checkPasswordStrength() {
 }
 
 registerBtn.addEventListener('click', () => {
-    addGlowEffect(registerBtn);
     const username = usernameInput.value;
     const password = passwordInput.value;
     if (username && password) {
@@ -151,7 +143,6 @@ registerBtn.addEventListener('click', () => {
 });
 
 loginBtn.addEventListener('click', () => {
-    addGlowEffect(loginBtn);
     const username = usernameInput.value;
     const password = passwordInput.value;
     if (username && password) {
@@ -167,7 +158,6 @@ loginBtn.addEventListener('click', () => {
 });
 
 sendButton.addEventListener('click', () => {
-    addGlowEffect(sendButton);
     const command = commandInput.value;
 
     if (!currentUserId) {
@@ -186,7 +176,6 @@ sendButton.addEventListener('click', () => {
 });
 
 listBtn.addEventListener('click', () => {
-    addGlowEffect(listBtn);
     if (currentUserId) {
         socket.emit('command', { userId: currentUserId, message: 'list' });
     } else {
@@ -195,7 +184,6 @@ listBtn.addEventListener('click', () => {
 });
 
 clearBtn.addEventListener('click', () => {
-    addGlowEffect(clearBtn);
     if (currentUserId) {
         socket.emit('command', { userId: currentUserId, message: 'clear' });
     } else {
@@ -204,7 +192,6 @@ clearBtn.addEventListener('click', () => {
 });
 
 restartBtn.addEventListener('click', () => {
-    addGlowEffect(restartBtn);
     if (currentUserId) {
         socket.emit('start', currentUserId);
     } else {
@@ -213,14 +200,12 @@ restartBtn.addEventListener('click', () => {
 });
 
 getUsersBtn.addEventListener('click', () => {
-    addGlowEffect(getUsersBtn);
     if (isAdmin) {
         socket.emit('adminGetUsers');
     }
 });
 
 banUserBtn.addEventListener('click', () => {
-    addGlowEffect(banUserBtn);
     if (isAdmin) {
         const userId = userIdInput.value;
         if (userId) {
@@ -232,7 +217,6 @@ banUserBtn.addEventListener('click', () => {
 });
 
 unbanUserBtn.addEventListener('click', () => {
-    addGlowEffect(unbanUserBtn);
     if (isAdmin) {
         const userId = userIdInput.value;
         if (userId) {
@@ -244,7 +228,6 @@ unbanUserBtn.addEventListener('click', () => {
 });
 
 deleteUserBtn.addEventListener('click', () => {
-    addGlowEffect(deleteUserBtn);
     if (isAdmin) {
         const userId = userIdInput.value;
         if (userId) {
@@ -333,4 +316,3 @@ checkExistingSession();
 togglePasswordBtn.addEventListener('click', togglePasswordVisibility);
 passwordInput.addEventListener('input', checkPasswordStrength);
 
-    
