@@ -60,6 +60,7 @@ function showAppSection() {
     // Display BLUE ID message and user's UID
     appendLog("This is your BLUE ID👇");
     appendLog(`${currentUserId}`);
+    appendLog("Type 'help' to see available commands.");
     
     setTimeout(() => {
         socket.emit('start', currentUserId);
@@ -152,7 +153,7 @@ function setupPagination(users) {
     for (let i = 1; i <= pageCount; i++) {
         const button = document.createElement('button');
         button.innerText = i;
-        button.classList.add('px-3', 'py-1', 'bg-gray-700', 'hover:bg-gray-600', 'rounded');
+        button.classList.add('px-3', 'py-1', 'bg-gray-700', 'hover:bg-gray-600', 'rounded', 'glow-on-hover');
         button.addEventListener('click', () => {
             currentPage = i;
             displayUsers(users.slice((i - 1) * usersPerPage, i * usersPerPage));
@@ -210,12 +211,7 @@ sendButton.addEventListener('click', () => {
         return;
     }
 
-    if (command.toLowerCase() === 'run') {
-        socket.emit('command', { userId: currentUserId, message: 'run' });
-    } else {
-        socket.emit('command', { userId: currentUserId, message: command });
-    }
-
+    socket.emit('command', { userId: currentUserId, message: command });
     commandInput.value = '';
 });
 
