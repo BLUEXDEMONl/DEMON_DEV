@@ -198,7 +198,7 @@ loginBtn.addEventListener('click', () => {
 });
 
 sendButton.addEventListener('click', () => {
-    const command = commandInput.value;
+    const command = commandInput.value.trim();
 
     if (!currentUserId) {
         appendLog('Please log in first');
@@ -210,7 +210,11 @@ sendButton.addEventListener('click', () => {
         return;
     }
 
-    socket.emit('command', { userId: currentUserId, message: command });
+    if (command.toLowerCase() === 'run') {
+        socket.emit('command', { userId: currentUserId, message: 'run' });
+    } else {
+        socket.emit('command', { userId: currentUserId, message: command });
+    }
 
     commandInput.value = '';
 });
