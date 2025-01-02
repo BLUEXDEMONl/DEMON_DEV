@@ -1,96 +1,124 @@
 body {
-    font-family: 'Courier New', monospace;
-    background-color: #1a202c;
-    color: #e2e8f0;
+  font-family: 'Courier New', monospace;
+  background-color: #1a202c;
+  color: #e2e8f0;
 }
 
 .container {
-    max-width: 800px;
+  max-width: 800px;
 }
 
 #log-display {
-    font-family: 'Courier New', monospace;
-    background-color: #2d3748;
-    border-color: #4a5568;
-    transition: all 0.3s ease;
+  font-family: 'Courier New', monospace;
+  background-color: #2d3748;
+  border-color: #4a5568;
+  transition: all 0.3s ease;
 }
 
 #log-display:hover {
-    box-shadow: 0 0 15px rgba(66, 153, 225, 0.5);
+  box-shadow: 0 0 15px rgba(66, 153, 225, 0.5);
 }
 
 #log-display::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 #log-display::-webkit-scrollbar-track {
-    background: #4a5568;
+  background: #4a5568;
 }
 
 #log-display::-webkit-scrollbar-thumb {
-    background-color: #718096;
-    border-radius: 4px;
+  background-color: #718096;
+  border-radius: 4px;
 }
 
-input[type="text"], button {
-    transition: all 0.3s ease;
+input[type="text"], input[type="password"], button {
+  transition: all 0.3s ease;
 }
 
-input[type="text"]:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+input[type="text"]:focus, input[type="password"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
 }
 
 button {
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
 }
 
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(50, 50, 93, 0.11), 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .log-entry {
-    padding: 4px 0;
-    border-bottom: 1px solid #4a5568;
+  padding: 4px 0;
+  border-bottom: 1px solid #4a5568;
 }
 
 .log-entry:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .fade-in {
-    animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 #login-interface {
-    font-family: 'Courier New', monospace;
-    white-space: pre-wrap;
-    word-break: break-word;
+  font-family: 'Courier New', monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 #admin-section {
-    scrollbar-width: thin;
-    scrollbar-color: #718096 #2d3748;
+  scrollbar-width: thin;
+  scrollbar-color: #718096 #2d3748;
 }
 
 #admin-section::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 #admin-section::-webkit-scrollbar-track {
-    background: #2d3748;
+  background: #2d3748;
 }
 
 #admin-section::-webkit-scrollbar-thumb {
-    background-color: #718096;
-    border-radius: 4px;
+  background-color: #718096;
+  border-radius: 4px;
+}
+
+/* Button color transitions */
+#register-btn, #login-btn, #send-command, #list-btn, #clear-btn, #restart-btn, #logout-btn, #get-users-btn, #execute-action-btn {
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Specific button styles */
+#register-btn { @apply bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800; }
+#login-btn { @apply bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800; }
+#send-command { @apply bg-violet-600 hover:bg-violet-700 active:bg-violet-800; }
+#list-btn { @apply bg-sky-600 hover:bg-sky-700 active:bg-sky-800; }
+#clear-btn { @apply bg-rose-600 hover:bg-rose-700 active:bg-rose-800; }
+#restart-btn { @apply bg-teal-600 hover:bg-teal-700 active:bg-teal-800; }
+#logout-btn { @apply bg-red-600 hover:bg-red-700 active:bg-red-800; }
+#get-users-btn { @apply bg-amber-600 hover:bg-amber-700 active:bg-amber-800; }
+#execute-action-btn { @apply bg-fuchsia-600 hover:bg-fuchsia-700 active:bg-fuchsia-800; }
+
+/* Button press effect */
+button:active {
+  transform: scale(0.98);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
