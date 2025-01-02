@@ -116,11 +116,11 @@ function checkPasswordStrength() {
     passwordRequirements.classList.remove('hidden');
     
     if (password.length >= 7) {
-        passwordStrength.textContent = 'Password strength: Strong';
+        passwordStrength.textContent = 'Password strength: Strong 💪';
         passwordStrength.className = 'mb-2 text-sm text-green-500';
         return true;
     } else {
-        passwordStrength.textContent = 'Password strength: Weak';
+        passwordStrength.textContent = 'Password strength: Weak💔';
         passwordStrength.className = 'mb-2 text-sm text-red-500';
         return false;
     }
