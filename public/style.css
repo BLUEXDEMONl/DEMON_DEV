@@ -159,3 +159,43 @@ button.bg-purple-600:active {
     fill: #2d3748;
 }
 
+#file-list li {
+    cursor: pointer;
+    padding: 5px 0;
+    transition: background-color 0.2s;
+}
+
+#file-list li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#file-list .folder::before {
+    content: '📁 ';
+}
+
+#file-list .file::before {
+    content: '📄 ';
+}
+
+.file-editor {
+    background-color: #2d3748;
+    border: 1px solid #4a5568;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.file-editor textarea {
+    background-color: #1a202c;
+    color: #e2e8f0;
+    font-family: 'Courier New', monospace;
+}
+
+.file-editor button {
+    transition: all 0.2s;
+}
+
+.file-editor button:hover {
+    opacity: 0.8;
+}
+

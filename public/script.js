@@ -75,7 +75,7 @@ function showAppSection() {
     setTimeout(() => {
         socket.emit('start', currentUserId);
         socket.emit('getServerRuntime');
-        socket.emit('getFileList', currentUserId);
+        socket.emit('getFileList', { userId: currentUserId, directory: '' }); // Updated file list request
     }, 500);
 }
 
@@ -178,15 +178,73 @@ function updateFileList(files) {
     files.forEach(file => {
         const li = document.createElement('li');
         li.textContent = file.name;
-        li.classList.add(file.type);
-        if (file.type === 'folder') {
-            li.addEventListener('click', () => {
-                socket.emit('getFileList', currentUserId, file.path);
-            });
-        }
+        li.classList.add(file.isDirectory ? 'folder' : 'file');
+        li.dataset.path = file.path;
+        li.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (file.isDirectory) {
+                socket.emit('getFileList', { userId: currentUserId, directory: file.path });
+            } else {
+                openFileEditor(file.path);
+            }
+        });
         fileList.appendChild(li);
     });
 }
+
+function openFileEditor(filePath) {
+    socket.emit('readFile', { userId: currentUserId, filePath });
+}
+
+let currentEditingFile = null;
+
+function createFileEditor(filePath, content) {
+    const editor = document.createElement('div');
+    editor.classList.add('file-editor');
+    editor.innerHTML = `
+        <h3>Editing: ${filePath}</h3>
+        <textarea class="w-full h-64 p-2 border rounded">${content}</textarea>
+        <div class="mt-2">
+            <button id="save-file" class="px-4 py-2 bg-green-500 text-white rounded">Save</button>
+            <button id="close-editor" class="px-4 py-2 bg-red-500 text-white rounded ml-2">Close</button>
+        </div>
+    `;
+
+    const saveBtn = editor.querySelector('#save-file');
+    const closeBtn = editor.querySelector('#close-editor');
+    const textarea = editor.querySelector('textarea');
+
+    saveBtn.addEventListener('click', () => {
+        socket.emit('writeFile', { userId: currentUserId, filePath, content: textarea.value });
+    });
+
+    closeBtn.addEventListener('click', () => {
+        editor.remove();
+        currentEditingFile = null;
+    });
+
+    return editor;
+}
+
+socket.on('fileContent', ({ filePath, content }) => {
+    if (currentEditingFile) {
+        currentEditingFile.remove();
+    }
+    currentEditingFile = createFileEditor(filePath, content);
+    document.getElementById('file-explorer').appendChild(currentEditingFile);
+});
+
+socket.on('fileSaved', ({ filePath }) => {
+    appendLog(`File ${filePath} saved successfully.`);
+});
+
+socket.on('fileError', ({ filePath, error }) => {
+    appendLog(`Error with file ${filePath}: ${error}`);
+});
+
+socket.on('fileList', ({ directory, files }) => {
+    updateFileList(files);
+});
 
 function toggleDarkMode() {
     document.body.classList.toggle('light-mode');
@@ -410,4 +468,10 @@ setInterval(() => {
         socket.emit('getUserStats');
     }
 }, 5000);
+
+socket.on('connect', () => {
+    if (currentUserId) {
+        socket.emit('getFileList', { userId: currentUserId, directory: '' });
+    }
+});
 
