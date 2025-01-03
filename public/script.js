@@ -1,4 +1,8 @@
-const socket = io();
+const socket = io({
+    auth: {
+        isAdmin: localStorage.getItem('isAdmin') === 'true'
+    }
+});
 
 // DOM elements
 const authSection = document.getElementById('auth-section');
@@ -35,6 +39,7 @@ const diskUsage = document.getElementById('disk-usage');
 const totalUsers = document.getElementById('total-users');
 const activeSessions = document.getElementById('active-sessions');
 const bannedUsers = document.getElementById('banned-users');
+const adminLogDisplay = document.getElementById('admin-log-display');
 
 let currentUserId = null;
 let isAdmin = false;
@@ -59,6 +64,8 @@ function showAppSection() {
     appSection.classList.remove('hidden');
     if (isAdmin) {
         adminSection.classList.remove('hidden');
+        socket.emit('joinAdminRoom');
+        socket.emit('getAdminLogs');
     }
     
     // Add username display above terminal
@@ -174,6 +181,14 @@ function setupPagination(users) {
 function toggleDarkMode() {
     document.body.classList.toggle('light-mode');
     localStorage.setItem('darkMode', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+}
+
+function displayAdminLog(log) {
+    const logEntry = document.createElement('div');
+    logEntry.textContent = `[${new Date(log.timestamp).toLocaleString()}] ${log.action}: ${log.details}`;
+    logEntry.classList.add('log-entry', 'fade-in');
+    adminLogDisplay.appendChild(logEntry);
+    adminLogDisplay.scrollTop = adminLogDisplay.scrollHeight;
 }
 
 // Event Listeners
@@ -368,6 +383,19 @@ socket.on('userStats', (stats) => {
     activeSessions.innerHTML = `Active Sessions: <span class="font-bold">${stats.active}</span>`;
     bannedUsers.innerHTML = `Banned Users: <span class="font-bold">${stats.banned}</span>`;
     activeUsers.textContent = stats.active;
+});
+
+socket.on('adminLog', (log) => {
+    if (isAdmin) {
+        displayAdminLog(log);
+    }
+});
+
+socket.on('adminLogs', (logs) => {
+    if (isAdmin) {
+        adminLogDisplay.innerHTML = '';
+        logs.forEach(displayAdminLog);
+    }
 });
 
 document.getElementById('logout-btn').addEventListener('click', logout);
