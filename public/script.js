@@ -195,7 +195,7 @@ function toggleDarkMode() {
 
 // Event Listeners
 registerBtn.addEventListener('click', () => {
-    const username = usernameInput.value;
+    const username = usernameInput.value.trim();
     const password = passwordInput.value;
     if (username && password) {
         if (currentUserId) {
@@ -203,7 +203,7 @@ registerBtn.addEventListener('click', () => {
         } else if (!checkPasswordStrength()) {
             appendLog('Password must be at least 7 characters long.', loginInterface);
         } else {
-            loginInterface.classList.loginInterface.classList.remove('hidden');
+            loginInterface.classList.remove('hidden');
             loginInterface.innerHTML = '';
             appendLog('Registering...', loginInterface);
             socket.emit('register', { username, password, clientId: getClientId() });
