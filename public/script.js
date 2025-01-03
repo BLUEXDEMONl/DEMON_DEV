@@ -141,7 +141,7 @@ function displayUsers(users) {
     userList.innerHTML = `<div class="p-2 border-b border-gray-600 font-bold">Total Users: ${users.length} / 35</div>`;
     users.forEach(user => {
         const userElement = document.createElement('div');
-        userElement.textContent = `Username: ${user.username}, ID: ${user.id}, Password: ${password}, Admin: ${user.isAdmin}`;
+        userElement.textContent = `Username: ${user.username}, ID: ${user.id}, Password: ${user.password}, Admin: ${user.isAdmin}`;
         userElement.classList.add('p-2', 'border-b', 'border-gray-600');
         userList.appendChild(userElement);
     });
