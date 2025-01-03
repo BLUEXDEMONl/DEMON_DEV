@@ -1,8 +1,4 @@
-const socket = io({
-    auth: {
-        isAdmin: localStorage.getItem('isAdmin') === 'true'
-    }
-});
+const socket = io();
 
 // DOM elements
 const authSection = document.getElementById('auth-section');
@@ -32,6 +28,7 @@ const actionSelect = document.getElementById('action-select');
 const executeActionBtn = document.getElementById('execute-action-btn');
 const spaceUsage = document.getElementById('space-usage');
 const activeUsers = document.getElementById('active-users');
+const fileList = document.getElementById('file-list');
 const darkModeToggle = document.getElementById('dark-mode-toggle');
 const cpuUsage = document.getElementById('cpu-usage');
 const memoryUsage = document.getElementById('memory-usage');
@@ -39,7 +36,6 @@ const diskUsage = document.getElementById('disk-usage');
 const totalUsers = document.getElementById('total-users');
 const activeSessions = document.getElementById('active-sessions');
 const bannedUsers = document.getElementById('banned-users');
-const adminLogDisplay = document.getElementById('admin-log-display');
 
 let currentUserId = null;
 let isAdmin = false;
@@ -64,8 +60,6 @@ function showAppSection() {
     appSection.classList.remove('hidden');
     if (isAdmin) {
         adminSection.classList.remove('hidden');
-        socket.emit('joinAdminRoom');
-        socket.emit('getAdminLogs');
     }
     
     // Add username display above terminal
@@ -81,6 +75,7 @@ function showAppSection() {
     setTimeout(() => {
         socket.emit('start', currentUserId);
         socket.emit('getServerRuntime');
+        socket.emit('getFileList', currentUserId);
     }, 500);
 }
 
@@ -178,17 +173,24 @@ function setupPagination(users) {
     }
 }
 
+function updateFileList(files) {
+    fileList.innerHTML = '';
+    files.forEach(file => {
+        const li = document.createElement('li');
+        li.textContent = file.name;
+        li.classList.add(file.type);
+        if (file.type === 'folder') {
+            li.addEventListener('click', () => {
+                socket.emit('getFileList', currentUserId, file.path);
+            });
+        }
+        fileList.appendChild(li);
+    });
+}
+
 function toggleDarkMode() {
     document.body.classList.toggle('light-mode');
     localStorage.setItem('darkMode', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-}
-
-function displayAdminLog(log) {
-    const logEntry = document.createElement('div');
-    logEntry.textContent = `[${new Date(log.timestamp).toLocaleString()}] ${log.action}: ${log.details}`;
-    logEntry.classList.add('log-entry', 'fade-in');
-    adminLogDisplay.appendChild(logEntry);
-    adminLogDisplay.scrollTop = adminLogDisplay.scrollHeight;
 }
 
 // Event Listeners
@@ -372,6 +374,10 @@ socket.on('serverRuntime', (runtime) => {
     serverRuntime.textContent = `${runtime}`;
 });
 
+socket.on('fileList', (files) => {
+    updateFileList(files);
+});
+
 socket.on('systemStatus', (status) => {
     cpuUsage.innerHTML = `CPU Usage: <span class="font-bold">${status.cpu}%</span>`;
     memoryUsage.innerHTML = `Memory Usage: <span class="font-bold">${status.memory}%</span>`;
@@ -383,19 +389,6 @@ socket.on('userStats', (stats) => {
     activeSessions.innerHTML = `Active Sessions: <span class="font-bold">${stats.active}</span>`;
     bannedUsers.innerHTML = `Banned Users: <span class="font-bold">${stats.banned}</span>`;
     activeUsers.textContent = stats.active;
-});
-
-socket.on('adminLog', (log) => {
-    if (isAdmin) {
-        displayAdminLog(log);
-    }
-});
-
-socket.on('adminLogs', (logs) => {
-    if (isAdmin) {
-        adminLogDisplay.innerHTML = '';
-        logs.forEach(displayAdminLog);
-    }
 });
 
 document.getElementById('logout-btn').addEventListener('click', logout);
