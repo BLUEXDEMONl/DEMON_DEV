@@ -25,6 +25,7 @@ const searchUsersInput = document.getElementById('search-users');
 const paginationContainer = document.getElementById('pagination');
 const actionSelect = document.getElementById('action-select');
 const executeActionBtn = document.getElementById('execute-action-btn');
+const spaceUsage = document.getElementById('space-usage'); // Added spaceUsage
 
 let currentUserId = null;
 let isAdmin = false;
@@ -303,7 +304,9 @@ socket.on('loginResponse', (response) => {
 });
 
 socket.on('message', (message) => {
-    if (message !== "This is your BLUE ID") {
+    if (typeof message === 'object' && message.type === 'spaceUsage') {
+        spaceUsage.textContent = `Space Used: ${message.usage}`;
+    } else if (message !== "This is your BLUE ID") {
         appendLog(message);
     }
     // Automatically scroll to the bottom of the log display
