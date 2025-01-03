@@ -1,5 +1,6 @@
 const socket = io();
 
+// DOM elements
 const authSection = document.getElementById('auth-section');
 const appSection = document.getElementById('app-section');
 const adminSection = document.getElementById('admin-section');
@@ -25,7 +26,16 @@ const searchUsersInput = document.getElementById('search-users');
 const paginationContainer = document.getElementById('pagination');
 const actionSelect = document.getElementById('action-select');
 const executeActionBtn = document.getElementById('execute-action-btn');
-const spaceUsage = document.getElementById('space-usage'); // Added spaceUsage
+const spaceUsage = document.getElementById('space-usage');
+const activeUsers = document.getElementById('active-users');
+const fileList = document.getElementById('file-list');
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const cpuUsage = document.getElementById('cpu-usage');
+const memoryUsage = document.getElementById('memory-usage');
+const diskUsage = document.getElementById('disk-usage');
+const totalUsers = document.getElementById('total-users');
+const activeSessions = document.getElementById('active-sessions');
+const bannedUsers = document.getElementById('banned-users');
 
 let currentUserId = null;
 let isAdmin = false;
@@ -65,6 +75,7 @@ function showAppSection() {
     setTimeout(() => {
         socket.emit('start', currentUserId);
         socket.emit('getServerRuntime');
+        socket.emit('getFileList', currentUserId);
     }, 500);
 }
 
@@ -95,12 +106,12 @@ function checkExistingSession() {
 }
 
 function getClientId() {
-  let clientId = localStorage.getItem('clientId');
-  if (!clientId) {
-    clientId = 'client_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem('clientId', clientId);
-  }
-  return clientId;
+    let clientId = localStorage.getItem('clientId');
+    if (!clientId) {
+        clientId = 'client_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('clientId', clientId);
+    }
+    return clientId;
 }
 
 function togglePasswordVisibility() {
@@ -162,6 +173,27 @@ function setupPagination(users) {
     }
 }
 
+function updateFileList(files) {
+    fileList.innerHTML = '';
+    files.forEach(file => {
+        const li = document.createElement('li');
+        li.textContent = file.name;
+        li.classList.add(file.type);
+        if (file.type === 'folder') {
+            li.addEventListener('click', () => {
+                socket.emit('getFileList', currentUserId, file.path);
+            });
+        }
+        fileList.appendChild(li);
+    });
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('light-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+}
+
+// Event Listeners
 registerBtn.addEventListener('click', () => {
     const username = usernameInput.value;
     const password = passwordInput.value;
@@ -171,7 +203,7 @@ registerBtn.addEventListener('click', () => {
         } else if (!checkPasswordStrength()) {
             appendLog('Password must be at least 7 characters long.', loginInterface);
         } else {
-            loginInterface.classList.remove('hidden');
+            loginInterface.classList.loginInterface.classList.remove('hidden');
             loginInterface.innerHTML = '';
             appendLog('Registering...', loginInterface);
             socket.emit('register', { username, password, clientId: getClientId() });
@@ -272,6 +304,9 @@ executeActionBtn.addEventListener('click', () => {
     }
 });
 
+darkModeToggle.addEventListener('click', toggleDarkMode);
+
+// Socket event listeners
 socket.on('registerResponse', (response) => {
     if (response.success) {
         currentUserId = response.userId;
@@ -305,7 +340,7 @@ socket.on('loginResponse', (response) => {
 
 socket.on('message', (message) => {
     if (typeof message === 'object' && message.type === 'spaceUsage') {
-        spaceUsage.textContent = `Space Used: ${message.usage}`;
+        spaceUsage.textContent = `${message.usage}`;
     } else if (message !== "This is your BLUE ID") {
         appendLog(message);
     }
@@ -336,7 +371,24 @@ socket.on('adminDeleteUserResponse', (response) => {
 });
 
 socket.on('serverRuntime', (runtime) => {
-    serverRuntime.textContent = `Server Runtime: ${runtime}`;
+    serverRuntime.textContent = `${runtime}`;
+});
+
+socket.on('fileList', (files) => {
+    updateFileList(files);
+});
+
+socket.on('systemStatus', (status) => {
+    cpuUsage.innerHTML = `CPU Usage: <span class="font-bold">${status.cpu}%</span>`;
+    memoryUsage.innerHTML = `Memory Usage: <span class="font-bold">${status.memory}%</span>`;
+    diskUsage.innerHTML = `Disk Usage: <span class="font-bold">${status.disk}%</span>`;
+});
+
+socket.on('userStats', (stats) => {
+    totalUsers.innerHTML = `Total Users: <span class="font-bold">${stats.total}</span>`;
+    activeSessions.innerHTML = `Active Sessions: <span class="font-bold">${stats.active}</span>`;
+    bannedUsers.innerHTML = `Banned Users: <span class="font-bold">${stats.banned}</span>`;
+    activeUsers.textContent = stats.active;
 });
 
 document.getElementById('logout-btn').addEventListener('click', logout);
@@ -344,5 +396,18 @@ togglePasswordBtn.addEventListener('click', togglePasswordVisibility);
 passwordInput.addEventListener('input', checkPasswordStrength);
 searchUsersInput.addEventListener('input', filterUsers);
 
+// Initialize
 checkExistingSession();
+if (localStorage.getItem('darkMode') === 'light') {
+    toggleDarkMode();
+}
+
+// Periodically update server runtime and system status
+setInterval(() => {
+    socket.emit('getServerRuntime');
+    if (isAdmin) {
+        socket.emit('getSystemStatus');
+        socket.emit('getUserStats');
+    }
+}, 5000);
 

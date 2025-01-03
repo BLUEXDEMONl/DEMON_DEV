@@ -7,9 +7,16 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-900 text-white transition-colors duration-300">
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-4xl font-bold text-center mb-8">DEMON_DEV Deployment App</h1>
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-4xl font-bold">DEMON_DEV Deployment App</h1>
+            <button id="dark-mode-toggle" class="p-2 bg-gray-700 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+        </div>
         <div id="auth-section" class="mb-8 hidden">
             <input type="text" id="username-input" placeholder="Enter username" class="w-full p-2 mb-4 bg-gray-800 border border-gray-700 rounded">
             <div class="relative">
@@ -30,23 +37,59 @@
             </div>
         </div>
         <div id="app-section" class="hidden">
-            <div id="space-usage" class="text-lg font-bold mb-2 text-yellow-500"></div>
-            <div id="server-runtime" class="text-lg font-bold mb-2 text-blue-500"></div>
-            <div id="log-display" class="bg-gray-800 border border-gray-700 rounded p-4 h-96 overflow-y-auto mb-4"></div>
-            <div id="command-section" class="flex space-x-2 mb-4">
-                <input type="text" id="command-input" placeholder="Enter command" class="flex-grow p-2 bg-gray-800 border border-gray-700 rounded">
-                <button id="send-command" class="p-2 bg-purple-600 hover:bg-purple-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">Send😈</button>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div class="bg-gray-800 p-4 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold mb-2">Space Usage</h2>
+                    <div id="space-usage" class="text-2xl font-bold text-yellow-500"></div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold mb-2">Server Runtime</h2>
+                    <div id="server-runtime" class="text-2xl font-bold text-blue-500"></div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold mb-2">Active Users</h2>
+                    <div id="active-users" class="text-2xl font-bold text-green-500">0</div>
+                </div>
             </div>
-            <div id="action-buttons" class="flex space-x-2 mb-4">
-                <button id="list-btn" class="flex-1 p-2 bg-blue-600 hover:bg-blue-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">LIST💦</button>
-                <button id="clear-btn" class="flex-1 p-2 bg-red-600 hover:bg-red-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">CLEAR👺</button>
-                <button id="restart-btn" class="flex-1 p-2 bg-green-600 hover:bg-green-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">RESTART♻️</button>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div class="md:col-span-2">
+                    <div id="log-display" class="bg-gray-800 border border-gray-700 rounded p-4 h-96 overflow-y-auto mb-4"></div>
+                    <div id="command-section" class="flex space-x-2 mb-4">
+                        <input type="text" id="command-input" placeholder="Enter command" class="flex-grow p-2 bg-gray-800 border border-gray-700 rounded">
+                        <button id="send-command" class="p-2 bg-purple-600 hover:bg-purple-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">Send😈</button>
+                    </div>
+                    <div id="action-buttons" class="flex space-x-2 mb-4">
+                        <button id="list-btn" class="flex-1 p-2 bg-blue-600 hover:bg-blue-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">LIST💦</button>
+                        <button id="clear-btn" class="flex-1 p-2 bg-red-600 hover:bg-red-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">CLEAR👺</button>
+                        <button id="restart-btn" class="flex-1 p-2 bg-green-600 hover:bg-green-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">RESTART♻️</button>
+                    </div>
+                </div>
+                <div>
+                    <div id="file-explorer" class="bg-gray-800 border border-gray-700 rounded p-4 h-96 overflow-y-auto mb-4">
+                        <h2 class="text-xl font-bold mb-2">File Explorer</h2>
+                        <ul id="file-list" class="list-disc list-inside"></ul>
+                    </div>
+                </div>
             </div>
             <button id="logout-btn" class="w-full p-2 bg-red-600 hover:bg-red-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Logout🤡</button>
         </div>
         <div id="admin-section" class="hidden mt-8">
             <div class="bg-gray-800 border border-gray-700 rounded p-6 shadow-lg">
                 <h2 class="text-3xl font-bold mb-6 text-center text-purple-400">MASTERS SPACE</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-gray-700 p-4 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2">System Status</h3>
+                        <div id="cpu-usage" class="mb-2">CPU Usage: <span class="font-bold">0%</span></div>
+                        <div id="memory-usage" class="mb-2">Memory Usage: <span class="font-bold">0%</span></div>
+                        <div id="disk-usage" class="mb-2">Disk Usage: <span class="font-bold">0%</span></div>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold mb-2">User Statistics</h3>
+                        <div id="total-users" class="mb-2">Total Users: <span class="font-bold">0</span></div>
+                        <div id="active-sessions" class="mb-2">Active Sessions: <span class="font-bold">0</span></div>
+                        <div id="banned-users" class="mb-2">Banned Users: <span class="font-bold">0</span></div>
+                    </div>
+                </div>
                 <div class="mb-4 flex space-x-2">
                     <button id="get-users-btn" class="flex-1 p-2 bg-yellow-600 hover:bg-yellow-700 rounded transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50">Get All Users🐥</button>
                     <input type="text" id="search-users" placeholder="Search users..." class="flex-1 p-2 bg-gray-700 border border-gray-600 rounded">
