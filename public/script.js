@@ -53,7 +53,7 @@ function appendLog(message, target = logDisplay) {
 
 function showAppSection() {
     const users = JSON.parse(localStorage.getItem('users') || '{}');
-    const username = Object.keys(users).find(name => users[name].id === currentUserId) || 'User';
+    const username = Object.keys(users).find(name => users[name].id === currentUserId) || 'BLUEXDEMON TECH🌹';
     
     authSection.classList.add('hidden');
     loginInterface.classList.add('hidden');
@@ -64,13 +64,13 @@ function showAppSection() {
     
     // Add username display above terminal
     const usernameDisplay = document.createElement('div');
-    usernameDisplay.textContent = `Terminal - ${username}`;
+    usernameDisplay.textContent = `Terminal - [${username}]`;
     usernameDisplay.classList.add('text-lg', 'font-bold', 'mb-2', 'text-green-500');
     logDisplay.parentNode.insertBefore(usernameDisplay, logDisplay);
     
     // Display BLUE ID message and user's UID
     appendLog("This is your ID👇");
-    appendLog(`    ${currentUserId}`);
+    appendLog(` [${currentUserId}]`);
     
     setTimeout(() => {
         socket.emit('start', currentUserId);
@@ -131,7 +131,7 @@ function checkPasswordStrength() {
         passwordStrength.className = 'mb-2 text-sm text-green-500';
         return true;
     } else {
-        passwordStrength.textContent = 'Password strength: Weak';
+        passwordStrength.textContent = 'Password strength: Weak 🐥';
         passwordStrength.className = 'mb-2 text-sm text-red-500';
         return false;
     }
