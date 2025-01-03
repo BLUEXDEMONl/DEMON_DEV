@@ -69,8 +69,8 @@ function showAppSection() {
     logDisplay.parentNode.insertBefore(usernameDisplay, logDisplay);
     
     // Display BLUE ID message and user's UID
-    appendLog("This is your BLUE ID👇");
-    appendLog(`${currentUserId}`);
+    appendLog("This is your ID👇");
+    appendLog(`    ${currentUserId}`);
     
     setTimeout(() => {
         socket.emit('start', currentUserId);
@@ -127,7 +127,7 @@ function checkPasswordStrength() {
     passwordRequirements.classList.remove('hidden');
     
     if (password.length >= 7) {
-        passwordStrength.textContent = 'Password strength: Strong';
+        passwordStrength.textContent = 'Password strength: Strong 💪';
         passwordStrength.className = 'mb-2 text-sm text-green-500';
         return true;
     } else {
@@ -141,7 +141,7 @@ function displayUsers(users) {
     userList.innerHTML = `<div class="p-2 border-b border-gray-600 font-bold">Total Users: ${users.length} / 25</div>`;
     users.forEach(user => {
         const userElement = document.createElement('div');
-        userElement.textContent = `Username: ${user.username}, ID: ${user.id}, Admin: ${user.isAdmin}`;
+        userElement.textContent = `Username: ${user.username}, ID: ${user.id}, Password: ${user.password}, Admin: ${user.isAdmin}`;
         userElement.classList.add('p-2', 'border-b', 'border-gray-600');
         userList.appendChild(userElement);
     });
@@ -312,7 +312,7 @@ socket.on('registerResponse', (response) => {
         currentUserId = response.userId;
         localStorage.setItem('currentUserId', currentUserId);
         localStorage.setItem('isAdmin', 'false');
-        appendLog(`Registered successfully. Your user BLUE ID is: ${currentUserId}`, loginInterface);
+        appendLog(`Registered successfully. Your user ID is: ${currentUserId}`, loginInterface);
         showAppSection();
     } else {
         appendLog(`Registration failed: ${response.message}`, loginInterface);
@@ -341,7 +341,7 @@ socket.on('loginResponse', (response) => {
 socket.on('message', (message) => {
     if (typeof message === 'object' && message.type === 'spaceUsage') {
         spaceUsage.textContent = `${message.usage}`;
-    } else if (message !== "This is your BLUE ID") {
+    } else if (message !== "This is your ID") {
         appendLog(message);
     }
     // Automatically scroll to the bottom of the log display
