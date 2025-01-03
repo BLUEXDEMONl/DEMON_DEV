@@ -60,7 +60,6 @@ function showAppSection() {
     // Display BLUE ID message and user's UID
     appendLog("This is your BLUE ID👇");
     appendLog(`${currentUserId}`);
-    appendLog("Type 'help' to see available commands.");
     
     setTimeout(() => {
         socket.emit('start', currentUserId);
@@ -116,11 +115,11 @@ function checkPasswordStrength() {
     passwordRequirements.classList.remove('hidden');
     
     if (password.length >= 7) {
-        passwordStrength.textContent = 'Password strength: Strong 💪';
+        passwordStrength.textContent = 'Password strength: Strong';
         passwordStrength.className = 'mb-2 text-sm text-green-500';
         return true;
     } else {
-        passwordStrength.textContent = 'Password strength: Weak💔';
+        passwordStrength.textContent = 'Password strength: Weak';
         passwordStrength.className = 'mb-2 text-sm text-red-500';
         return false;
     }
@@ -153,7 +152,7 @@ function setupPagination(users) {
     for (let i = 1; i <= pageCount; i++) {
         const button = document.createElement('button');
         button.innerText = i;
-        button.classList.add('px-3', 'py-1', 'bg-gray-700', 'hover:bg-gray-600', 'rounded', 'glow-on-hover');
+        button.classList.add('px-3', 'py-1', 'bg-gray-700', 'hover:bg-gray-600', 'rounded');
         button.addEventListener('click', () => {
             currentPage = i;
             displayUsers(users.slice((i - 1) * usersPerPage, i * usersPerPage));
@@ -199,7 +198,7 @@ loginBtn.addEventListener('click', () => {
 });
 
 sendButton.addEventListener('click', () => {
-    const command = commandInput.value.trim();
+    const command = commandInput.value;
 
     if (!currentUserId) {
         appendLog('Please log in first');
@@ -212,6 +211,7 @@ sendButton.addEventListener('click', () => {
     }
 
     socket.emit('command', { userId: currentUserId, message: command });
+
     commandInput.value = '';
 });
 

@@ -52,11 +52,6 @@ button:hover {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-button:active {
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-  transform: translateY(1px);
-}
-
 .log-entry {
     padding: 4px 0;
     border-bottom: 1px solid #4a5568;
@@ -97,18 +92,5 @@ button:active {
 #admin-section::-webkit-scrollbar-thumb {
     background-color: #718096;
     border-radius: 4px;
-}
-
-.glow-on-hover {
-  transition: all 0.3s ease;
-}
-
-.glow-on-hover:hover {
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-.glow-on-hover:active {
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-  transform: translateY(1px);
 }
 
