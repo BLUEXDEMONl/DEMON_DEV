@@ -92,6 +92,8 @@ function checkExistingSession() {
         authSection.classList.remove('hidden');
         loginInterface.classList.add('hidden');
     }
+    // Add glow effect to dynamically added buttons
+    document.querySelectorAll('button').forEach(addGlowEffect);
 }
 
 function getClientId() {
@@ -345,4 +347,19 @@ passwordInput.addEventListener('input', checkPasswordStrength);
 searchUsersInput.addEventListener('input', filterUsers);
 
 checkExistingSession();
+
+function addGlowEffect(button) {
+  button.addEventListener('mousedown', () => {
+    button.classList.add('glow-effect');
+  });
+  button.addEventListener('mouseup', () => {
+    button.classList.remove('glow-effect');
+  });
+  button.addEventListener('mouseleave', () => {
+    button.classList.remove('glow-effect');
+  });
+}
+
+// Add glow effect to all buttons
+document.querySelectorAll('button').forEach(addGlowEffect);
 
