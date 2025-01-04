@@ -53,7 +53,7 @@ function appendLog(message, target = logDisplay) {
 
 function showAppSection() {
     const users = JSON.parse(localStorage.getItem('users') || '{}');
-    const username = Object.keys(users).find(name => users[name].id === currentUserId) || 'BLUEXDEMON TECH🌹';
+    const username = Object.keys(users).find(name => users[name].id === currentUserId) || 'User';
     
     authSection.classList.add('hidden');
     loginInterface.classList.add('hidden');
@@ -64,13 +64,13 @@ function showAppSection() {
     
     // Add username display above terminal
     const usernameDisplay = document.createElement('div');
-    usernameDisplay.textContent = `Terminal - [${username}]`;
+    usernameDisplay.textContent = `Terminal - ${username}`;
     usernameDisplay.classList.add('text-lg', 'font-bold', 'mb-2', 'text-green-500');
     logDisplay.parentNode.insertBefore(usernameDisplay, logDisplay);
     
     // Display BLUE ID message and user's UID
-    appendLog("This is your ID👇");
-    appendLog(` [${currentUserId}]`);
+    appendLog("This is your BLUE ID👇");
+    appendLog(`${currentUserId}`);
     
     setTimeout(() => {
         socket.emit('start', currentUserId);
@@ -127,24 +127,27 @@ function checkPasswordStrength() {
     passwordRequirements.classList.remove('hidden');
     
     if (password.length >= 7) {
-        passwordStrength.textContent = 'Password strength: Strong 💪';
+        passwordStrength.textContent = 'Password strength: Strong';
         passwordStrength.className = 'mb-2 text-sm text-green-500';
         return true;
     } else {
-        passwordStrength.textContent = 'Password strength: Weak 🐥';
+        passwordStrength.textContent = 'Password strength: Weak';
         passwordStrength.className = 'mb-2 text-sm text-red-500';
         return false;
     }
 }
 
 function displayUsers(users) {
-    userList.innerHTML = `<div class="p-2 border-b border-gray-600 font-bold">Total Users: ${users.length} / 35</div>`;
-    users.forEach(user => {
-        const userElement = document.createElement('div');
-        userElement.textContent = `Username: ${user.username}, ID: ${user.id}, Password: ${user.password}, Admin: ${user.isAdmin}`;
-        userElement.classList.add('p-2', 'border-b', 'border-gray-600');
-        userList.appendChild(userElement);
-    });
+  userList.innerHTML = `
+    <div class="p-2 border-b border-gray-600 font-bold">Total Users: ${users.length} / 25</div>
+    <div class="text-red-500 font-bold p-2">⚠️ Warning: Displaying passwords is a severe security risk!</div>
+  `;
+  users.forEach(user => {
+    const userElement = document.createElement('div');
+    userElement.textContent = `Username: ${user.username}, ID: ${user.id}, Admin: ${user.isAdmin}, Password: ${user.password}`;
+    userElement.classList.add('p-2', 'border-b', 'border-gray-600');
+    userList.appendChild(userElement);
+  });
 }
 
 function filterUsers() {
@@ -312,7 +315,7 @@ socket.on('registerResponse', (response) => {
         currentUserId = response.userId;
         localStorage.setItem('currentUserId', currentUserId);
         localStorage.setItem('isAdmin', 'false');
-        appendLog(`Registered successfully. Your user ID is: ${currentUserId}`, loginInterface);
+        appendLog(`Registered successfully. Your user BLUE ID is: ${currentUserId}`, loginInterface);
         showAppSection();
     } else {
         appendLog(`Registration failed: ${response.message}`, loginInterface);
@@ -341,7 +344,7 @@ socket.on('loginResponse', (response) => {
 socket.on('message', (message) => {
     if (typeof message === 'object' && message.type === 'spaceUsage') {
         spaceUsage.textContent = `${message.usage}`;
-    } else if (message !== "This is your ID") {
+    } else if (message !== "This is your BLUE ID") {
         appendLog(message);
     }
     // Automatically scroll to the bottom of the log display
