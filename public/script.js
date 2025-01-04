@@ -53,7 +53,7 @@ function appendLog(message, target = logDisplay) {
 
 function showAppSection() {
     const users = JSON.parse(localStorage.getItem('users') || '{}');
-    const username = Object.keys(users).find(name => users[name].id === currentUserId) || 'User';
+    const username = Object.keys(users).find(name => users[name].id === currentUserId) || 'BLUExDEMON TECH 🌹';
     
     authSection.classList.add('hidden');
     loginInterface.classList.add('hidden');
@@ -69,7 +69,7 @@ function showAppSection() {
     logDisplay.parentNode.insertBefore(usernameDisplay, logDisplay);
     
     // Display BLUE ID message and user's UID
-    appendLog("This is your BLUE ID👇");
+    appendLog("This is your ID👇");
     appendLog(`${currentUserId}`);
     
     setTimeout(() => {
@@ -344,7 +344,7 @@ socket.on('loginResponse', (response) => {
 socket.on('message', (message) => {
     if (typeof message === 'object' && message.type === 'spaceUsage') {
         spaceUsage.textContent = `${message.usage}`;
-    } else if (message !== "This is your BLUE ID") {
+    } else if (message !== "This is your ID") {
         appendLog(message);
     }
     // Automatically scroll to the bottom of the log display
