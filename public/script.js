@@ -139,7 +139,7 @@ function checkPasswordStrength() {
 
 function displayUsers(users) {
   userList.innerHTML = `
-    <div class="p-2 border-b border-gray-600 font-bold">Total Users: ${users.length} / 25</div>
+    <div class="p-2 border-b border-gray-600 font-bold">Total Users: ${users.length} / 40</div>
     <div class="text-red-500 font-bold p-2">⚠️ Warning: Displaying passwords is a severe security risk!</div>
   `;
   users.forEach(user => {
